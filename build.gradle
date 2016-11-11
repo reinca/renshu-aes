@@ -1,18 +1,33 @@
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'eclipse'
-
+buildscript {
     repositories {
-       mavenCentral()
+        mavenCentral()
     }
-
     dependencies {
-        testCompile 'junit:junit:4.8.2'
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.1.RELEASE")
     }
+}
 
-    version = '1.0'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'war'
+apply plugin: 'spring-boot'
 
-    jar {
-        manifest.attributes provider: 'my cool company'
-    }
+jar {
+    baseName = 'renshu-aes'
+    version =  '0.1.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web")
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+}
+task debug << {
+    configurations.compile.each { println it }
 }

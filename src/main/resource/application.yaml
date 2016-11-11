@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: Tester
+server:
+  port: 80
