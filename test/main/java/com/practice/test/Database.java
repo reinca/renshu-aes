@@ -18,9 +18,9 @@ public class Database {
 	public void dataAddTest() {
 		UserData testData = new UserData();
 		logger.info(testData.toString());
-		aess.add(testData);
+		aess.addUser(testData.getId());
 		UserData result = aess.find(testData.getId());
 		assertEquals(result, testData);
-		aess.delete();
+		aess.delete(result.getId());
 	}
 }

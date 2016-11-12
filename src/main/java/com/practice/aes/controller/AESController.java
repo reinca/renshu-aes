@@ -1,35 +1,50 @@
 package com.practice.aes.controller;
 
-import java.time.OffsetDateTime;
+import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.practice.aes.domain.entity.Result;
 import com.practice.aes.domain.entity.UserData;
-import com.practice.aes.domain.repository.UserDataRepository;
+import com.practice.aes.service.AESService;
 
 @RestController
+@RequestMapping("/")
 public class AESController {
-
-	private static final Logger logger = LoggerFactory.getLogger(AESController.class);
 	
-	@Autowired UserDataRepository userData;
+	@Autowired private AESService aess;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public UserData greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-		OffsetDateTime currentDate = OffsetDateTime.now();
-		UserData result = new UserData(name);
-		userData.save(result);
-		logger.info(userData.findAll().toString());
-		userData.deleteAll();
-		return result;
+	@RequestMapping(method = RequestMethod.GET)
+	public List<UserData> listUp() {
+		return aess.list();
+	}
+
+	@RequestMapping(value="{id}", method = RequestMethod.GET)
+	public UserData getOne(@PathVariable("id") long id){
+		return aess.find(id);
+	}
+	
+	@RequestMapping(value="{id}", method = RequestMethod.POST)
+	public Result addUser(@PathVariable("id") long id){
+		return aess.addUser(id);
+	}
+	
+	@RequestMapping(value="{id}", method = RequestMethod.PUT)
+	public Result refreshPassword(@PathVariable("id") long id){
+		return aess.refreshPassword(id);
+	}
+
+	@RequestMapping(value="{id}", method = RequestMethod.DELETE)
+	public Result deleteOne(@PathVariable("id") long id){
+		return aess.delete(id);
+	}
+
+	@RequestMapping(value="reset", method = RequestMethod.DELETE)
+	public Result reset(){
+		return aess.reset();
 	}
 }
-
-// default: getTime
-// if null: nowTime

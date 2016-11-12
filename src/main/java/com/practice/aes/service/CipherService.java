@@ -3,6 +3,7 @@ package com.practice.aes.service;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.Key;
+import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
@@ -23,39 +24,47 @@ public class CipherService {
 	private static final String DEFAULT_KEY = "1234567890ABCDEFFEDCBA0987654321"; // 32bit default
 	private static byte[] IV = new byte[16];
 
-	public String encode(String str, String timeKey) throws Exception {
-	    Key keySpec = getAESKey(timeKey, true);
+	public String encode(OffsetDateTime currentTime, OffsetDateTime baseTime) throws Exception {
+		return encode(currentTime.toString(), baseTime.toString());
+	}
+
+	public String decode(String encryptedText, OffsetDateTime baseTime) throws Exception {
+		return decode(encryptedText, baseTime.toString());
+	}
+
+	public String encode(String currentTime, String baseTime) throws Exception {
+	    Key keySpec = getAESKey(baseTime, true);
 	    Cipher c;
 	    try {
 	    	c = Cipher.getInstance(INSTANCE);
 			c.init(Cipher.ENCRYPT_MODE, keySpec, new IvParameterSpec(IV));
 		} catch (InvalidKeyException e) {
-		    keySpec = getAESKey(timeKey, false);
+		    keySpec = getAESKey(baseTime, false);
 		    c = Cipher.getInstance(INSTANCE);
 			c.init(Cipher.ENCRYPT_MODE, keySpec, new IvParameterSpec(IV));
 		}
-	    byte[] encrypted = c.doFinal(str.getBytes("UTF-8"));
+	    byte[] encrypted = c.doFinal(currentTime.getBytes("UTF-8"));
 	    String result = new String(Base64.getEncoder().encodeToString(encrypted));
 	    return result;
 	}
 
-	public String decode(String str, String timeKey) throws Exception {
-	    Key keySpec = getAESKey(timeKey, true);
+	public String decode(String encryptedText, String baseTime) throws Exception {
+	    Key keySpec = getAESKey(baseTime, true);
 	    Cipher c;
 	    try {
 	    	c = Cipher.getInstance(INSTANCE);
 			c.init(Cipher.DECRYPT_MODE, keySpec, new IvParameterSpec(IV));
 		} catch (InvalidKeyException e) {
-		    keySpec = getAESKey(timeKey, false);
+		    keySpec = getAESKey(baseTime, false);
 	    	c = Cipher.getInstance(INSTANCE);
 			c.init(Cipher.DECRYPT_MODE, keySpec, new IvParameterSpec(IV));
 		}
-	    byte[] byteStr = Base64.getDecoder().decode(str.getBytes("UTF-8"));
+	    byte[] byteStr = Base64.getDecoder().decode(encryptedText.getBytes("UTF-8"));
 	    String result = new String(c.doFinal(byteStr), "UTF-8");
 	    return result;
 	}
 	
-	public Key getAESKey(String timeKey, boolean size) {
+	private Key getAESKey(String timeKey, boolean size) {
 		String date32 = String.format("%32s", timeKey).replace(' ', '0');
 	    Key keySpec;
 	    String key = (timeKey != null) ? date32 : DEFAULT_KEY;
