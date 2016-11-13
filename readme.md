@@ -18,8 +18,8 @@ delete one user information
 compare encrypted key server-client, execute auth<br />
 key must be get _HEX string_ of encrypted key
 - Encrypted key example<br />
-INFMpDA/bTdYm/l45a23o/jm7XudEoqmbn0nzqxaPjc=(¡¿)<br />
-494E464D7044412F625464596D2F6C34356132336F2F6A6D37587564456F716D626E306E7A717861506A633D (¡Û)
+INFMpDA/bTdYm/l45a23o/jm7XudEoqmbn0nzqxaPjc=(X)<br />
+494E464D7044412F625464596D2F6C34356132336F2F6A6D37587564456F716D626E306E7A717861506A633D (O)
 
 ### Entity/Schema
 - User Data<br />
