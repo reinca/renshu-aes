@@ -3,19 +3,16 @@ AES Encryption/Simplist auth api
 
 ### Controller list (base port: _8080_)
 - /admin/list<br />
-list all user information (ID, based time, current time, encrypted key) in database 
+(GET Method) list all user information (ID, based time, current time, encrypted key) in database 
 - /admin/reset <br />
-_initialize database_
-- /{id} (GET Method)<br />
-get one user information
-- /{id} (POST Method)<br />
-add one user information
-- /{id} (PUT Method)<br />
-refresh one user encrypted key
-- /{id} (DELETE Method)<br />
-delete one user information
-- /{id}/auth?key={key} (GET Method)<br />
-compare encrypted key server-client, execute auth<br />
+(DELETE Method) _initialize database_
+- /{id} <br />
+(GET Method) get one user information<br />
+(POST Method) add one user information<br />
+(PUT Method) refresh one user encrypted key<br />
+(DELETE Method) delete one user information
+- /{id}/auth?key={key}<br />
+(GET Method) compare encrypted key server-client, execute auth<br />
 key must be get _HEX string_ of encrypted key
 - Encrypted key example<br />
 (X)	INFMpDA/bTdYm/l45a23o/jm7XudEoqmbn0nzqxaPjc=<br />
@@ -39,5 +36,5 @@ key must be get _HEX string_ of encrypted key
 
 ### Undeveloped Controller
 - /admin/decode/{id}<br />
-decode one user encrypted key (return id, key)<br />
+(GET Method) decode one user encrypted key (return id, key)<br />
 I made service but, it is useless and damaged security.
