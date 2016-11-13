@@ -16,7 +16,7 @@ public class UserData {
 	private String uid;						// Unique id for server-client
 	private String encryptedKey;			// Encrypted Key based baseTime and loggedTime
 	private OffsetDateTime baseTime;		// Used as IV key, application start time (aes.Application)
-	private OffsetDateTime loggedTime;		// Used as private key, time for requested
+	private OffsetDateTime currentTime;		// Used as private key, time for requested
 
 	public UserData(){}
 	
@@ -24,7 +24,7 @@ public class UserData {
 		this.uid = uid;
 		this.encryptedKey = null;
 		this.baseTime = Application.UP_DATE;
-		this.loggedTime = OffsetDateTime.now();
+		this.currentTime = OffsetDateTime.now();
 	}
 
 	public long getId() {
@@ -60,22 +60,22 @@ public class UserData {
 		this.baseTime = baseTime;
 	}
 
-	public OffsetDateTime getLoggedTime() {
-		return loggedTime;
+	public OffsetDateTime getCurrentTime() {
+		return currentTime;
 	}
 
-	public void setLoggedTime() {
-		this.loggedTime = OffsetDateTime.now();
+	public void setCurrentTime() {
+		this.currentTime = OffsetDateTime.now();
 	}
 
-	public void setLoggedTime(OffsetDateTime loggedTime) {
-		this.loggedTime = loggedTime;
+	public void setCurrentTime(OffsetDateTime currentTime) {
+		this.currentTime = currentTime;
 	}
 
 	@Override
 	public String toString() {
 		return "UserData [id=" + id + ", uid=" + uid + ", encryptedKey=" + encryptedKey + ", baseTime=" + baseTime
-				+ ", loggedTime=" + loggedTime + "]";
+				+ ", loggedTime=" + currentTime + "]";
 	}
 	
 }

@@ -55,7 +55,7 @@ public class AESService {
 		if(udr.findOneByUid(id) != null) return new Result(id, "failed");
 		UserData result = new UserData(id);
 		try {
-			String enc = cs.encode(result.getLoggedTime(), result.getBaseTime());
+			String enc = cs.encode(result.getCurrentTime(), result.getBaseTime());
 			result.setEncryptedKey(enc);
 			udr.save(result);
 			logger.debug(result.toString());
@@ -64,7 +64,6 @@ public class AESService {
 			logger.error(e.toString());
 			return new Result(id, "failed");
 		}
-
 	}
 
 	public Result refreshPassword(String id) {
@@ -75,11 +74,24 @@ public class AESService {
 		try {
 			String enc = cs.encode(loggedTimeTmp, baseTimeTmp);
 			result.setBaseTime(baseTimeTmp);
-			result.setLoggedTime(loggedTimeTmp);
+			result.setCurrentTime(loggedTimeTmp);
 			result.setEncryptedKey(enc);
 			udr.saveAndFlush(result);
 			logger.debug(result.toString());
 			return new Result(id, "success");
+		} catch (Exception e) {
+			logger.error(e.toString());
+			return new Result(id, "failed");
+		}
+	}
+
+	public Result decodePassword(String id) {
+		if(udr.findOneByUid(id) != null) return new Result(id, "failed");
+		UserData result = new UserData(id);
+		try {
+			String enc = cs.decode(result.getEncryptedKey(), result.getCurrentTime(), result.getBaseTime());
+			logger.debug(result.toString());
+			return new Result(id, enc);
 		} catch (Exception e) {
 			logger.error(e.toString());
 			return new Result(id, "failed");
