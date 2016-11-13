@@ -1,9 +1,10 @@
-package com.practice.aes.domain.entity;
+package com.practice.aes.domain.model;
 
 import java.time.OffsetDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.practice.aes.Application;
@@ -11,20 +12,16 @@ import com.practice.aes.Application;
 @Entity
 public class UserData {
 
-	@Id @GeneratedValue
-	private long id;
-	private String encryptedKey;
-	private OffsetDateTime baseTime;
-	private OffsetDateTime loggedTime;
+	@Id @GeneratedValue(strategy=GenerationType.AUTO) private long id;	// Unique id for database
+	private String uid;						// Unique id for server-client
+	private String encryptedKey;			// Encrypted Key based baseTime and loggedTime
+	private OffsetDateTime baseTime;		// Used as IV key, application start time (aes.Application)
+	private OffsetDateTime loggedTime;		// Used as private key, time for requested
 
-	public UserData() {
-		this.encryptedKey = null;
-		this.baseTime = Application.UP_DATE;
-		this.loggedTime = OffsetDateTime.now();
-	}
-
-	public UserData(long id) {
-		this.id = id;
+	public UserData(){}
+	
+	public UserData(String uid) {
+		this.uid = uid;
 		this.encryptedKey = null;
 		this.baseTime = Application.UP_DATE;
 		this.loggedTime = OffsetDateTime.now();
@@ -32,6 +29,15 @@ public class UserData {
 
 	public long getId() {
 		return id;
+	}
+	
+
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
 	}
 
 	public String getEncryptedKey() {
@@ -68,8 +74,8 @@ public class UserData {
 
 	@Override
 	public String toString() {
-		return "UserData [id=" + id + ", encryptedKey=" + encryptedKey + ", baseTime=" + baseTime + ", loggedTime="
-				+ loggedTime + "]";
+		return "UserData [id=" + id + ", uid=" + uid + ", encryptedKey=" + encryptedKey + ", baseTime=" + baseTime
+				+ ", loggedTime=" + loggedTime + "]";
 	}
-
+	
 }

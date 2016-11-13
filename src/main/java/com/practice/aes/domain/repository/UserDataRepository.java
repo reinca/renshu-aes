@@ -1,9 +1,14 @@
 package com.practice.aes.domain.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import javax.transaction.Transactional;
 
-import com.practice.aes.domain.entity.UserData;
+import com.practice.aes.domain.model.UserData;
 
-public interface UserDataRepository extends JpaRepository<UserData, Long> {
-	
+@Transactional
+public interface UserDataRepository extends UserListRepository<UserData, Long> {
+	void deleteByUid(String id);
+	void delete(UserData user);
+	void deleteAll();
+	void save(UserData result);
+	void saveAndFlush(UserData result);
 }

@@ -1,20 +1,20 @@
-package com.practice.aes.domain.entity;
+package com.practice.aes.domain.model;
 
 public class Result {
 
-	private long id;
+	private String id;
 	private String status;
 
-	public Result(long id, String result) {
+	public Result(String id, String result) {
 		this.id = id;
 		this.status = result;
 	}
 
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
