@@ -45,6 +45,11 @@ public class AESController {
 		return aess.delete(id);
 	}
 	
+/*	@RequestMapping(value="admin/decode/{id}", method = RequestMethod.PUT)
+	public Result decodePassword(@PathVariable("id") String id){
+		return aess.decodePassword(id);
+	} */
+	
 	@RequestMapping(value="admin/list", method = RequestMethod.GET)
 	public List<UserData> listUp() {
 		return aess.list();
