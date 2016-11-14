@@ -24,11 +24,6 @@ public class AESController {
 	public Result getAuth(@PathVariable("id") String id, @RequestParam(value="key", defaultValue="failed") String key){
 		return aess.auth(id, key);
 	}
-	
-	@RequestMapping(value="{id}", method = RequestMethod.GET)
-	public UserData getOne(@PathVariable("id") String id){
-		return aess.find(id);
-	}
 
 	@RequestMapping(value="{id}", method = RequestMethod.POST)
 	public Result addUser(@PathVariable("id") String id){
@@ -45,18 +40,26 @@ public class AESController {
 		return aess.delete(id);
 	}
 	
-/*	@RequestMapping(value="admin/decode/{id}", method = RequestMethod.PUT)
-	public Result decodePassword(@PathVariable("id") String id){
-		return aess.decodePassword(id);
-	} */
+	@RequestMapping(value="{id}", method = RequestMethod.GET)
+	public UserData getOne(@PathVariable("id") String id){
+		return aess.find(id);
+	}
 	
 	@RequestMapping(value="admin/list", method = RequestMethod.GET)
 	public List<UserData> listUp() {
 		return aess.list();
 	}
 
+	// Caution: THIS FUNCTION IS DANGER
 	@RequestMapping(value="admin/reset", method = RequestMethod.DELETE)
 	public Result reset(){
 		return aess.reset();
 	}
+	
+	// Because of security problem, decode function unsupported
+/*	@RequestMapping(value="admin/decode/{id}", method = RequestMethod.PUT)
+	public Result decodePassword(@PathVariable("id") String id){
+		return aess.decodePassword(id);
+	} */
+	
 }

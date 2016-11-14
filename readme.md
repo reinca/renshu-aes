@@ -9,33 +9,63 @@ AES Encryption/Simplist auth api
 - List all users information (ID, based time, current time, encrypted key) in database 
 
 ### DELETE /admin/reset
-- _Initialize all database_
+- **Initialize all database**
 
 ### /{id} <br />
-- _GET_ get one user information
-- _POST_ add one user information<br />
+- *GET* get one user information
+- *POST* add one user information<br />
 No parameter required. Just set method
-- _PUT_ refresh one user encrypted key<br />
+- *PUT* refresh one user encrypted key<br />
 No parameter required. Just set method
-- _DELETE_ delete one user information
+- *DELETE* delete one user information
 
 ### GET /{id}/auth?key={key}
-- compare encrypted key server-client, execute auth<br />
+- Compare encrypted key server-client, execute auth<br />
 
 ### Parameters
-- String id<br />
+- **id** *String*<br />
 	username or user ID, unique key
-- String key<br />
+- **key** *String*<br />
 	Encrypted key must be get _HEX string_
 - Encrypted key example<br />
-(X)	INFMpDA/bTdYm/l45a23o/jm7XudEoqmbn0nzqxaPjc=<br />
-(O)	494E464D7044412F625464596D2F6C34356132336F2F6A6D37587564456F716D626E306E7A717861506A633D
+**(X)**	INFMpDA/bTdYm/l45a23o/jm7XudEoqmbn0nzqxaPjc=<br />
+**(O)**	494E464D7044412F625464596D2F6C34356132336F2F6A6D37587564456F716D626E306E7A717861506A633D
 
-### Sample Response Body
+### Sample Response Body (POST, PUT, DELETE, AUTH)
 	{
 	    "id": "tester-API",
 	    "status": "success"
 	}
+
+### Response parameters
+- **ID** *String*<br />
+Username or user ID, as unique key
+- **status** *String*<br />
+Result status message (success, failed, error)
+
+### Sample Response Body (GET)
+	{
+		"uid": "test2",
+		"encryptedKey": "b4Ge9ugIA5hkBkVfyDWs2K1/u/IzhV99q3HGiakhcWs=",
+		"baseTime":{"offset":{"totalSeconds": 32400, "id": "+09:00", "rules":{"transitionRules":[],・},
+		"requestedTime":{"offset":{"totalSeconds": 32400, "id": "+09:00", "rules":{"transitionRules":[],・}
+	}
+
+### Sample Response Body (LIST GET)
+	[
+		{"uid": "test1", "encryptedKey": "b4Ge9ugIA5hkBkVfyDWs2HMdcJ37PVeBACgho0DMsmE=", "baseTime":{"offset":{"totalSeconds": 32400,・},
+		{"uid": "test2", "encryptedKey": "b4Ge9ugIA5hkBkVfyDWs2K1/u/IzhV99q3HGiakhcWs=", "baseTime":{"offset":{"totalSeconds": 32400,・}
+	]
+
+### Response parameters
+- **uid** *String*<br />
+Username or user ID, as unique key
+- **encryptedKey** *String*<br />
+Encrypted key, base64 encoded
+- **baseTime** *OffsetDateTime*<br />
+Application started time (Differ by user add time)
+- **requestedTime** *OffsetDateTime*<br />
+Request received time
 
 ## Build Spec
 - Java 8
@@ -44,6 +74,6 @@ No parameter required. Just set method
 - H2 Database
 
 ## Undeveloped Controller
-- /admin/decode/{id}<br />
-(GET Method) decode one user encrypted key (return id, key)<br />
-I made service but, it is useless and damaged security.
+- *GET* /admin/decode/{id}<br />
+Decode one user encrypted key (return id, key)<br />
+I made service but, it will be occurred security problem.

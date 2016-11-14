@@ -20,6 +20,7 @@ import com.practice.aes.domain.repository.UserDataRepository;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 @DataJpaTest
+// Database CRUD Test
 public class Database {
 	private static final Logger logger = LoggerFactory.getLogger(Database.class);
     @Autowired private TestEntityManager entityManager;

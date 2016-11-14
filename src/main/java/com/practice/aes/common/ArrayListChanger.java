@@ -3,6 +3,7 @@ package com.practice.aes.common;
 import java.util.ArrayList;
 import java.util.List;
 
+// Because storage capacity, abanndoned using commons-lang
 public class ArrayListChanger {
 	public static List<Byte> byteArrayToList(byte[] src) {
 		List<Byte> result = new ArrayList<Byte>();

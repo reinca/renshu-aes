@@ -4,7 +4,6 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
-        classpath("org.springframework:springloaded:1.2.6.RELEASE")
     }
 }
 
@@ -27,7 +26,6 @@ targetCompatibility = 1.8
 dependencies {
     compile("org.springframework.boot:spring-boot-actuator")
     compile("org.springframework.boot:spring-boot-starter-web")
-    compile("org.springframework.boot:spring-boot-starter-data-rest")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     runtime("com.h2database:h2")
     testCompile('org.springframework.boot:spring-boot-starter-test')

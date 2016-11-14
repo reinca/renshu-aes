@@ -23,7 +23,8 @@ public class AESControllerExceptionHandler {
 		logger.debug("ExceptionHandler initialized");
 	}
 
-    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+	// When exception occurred, Code 500/error result return
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(Exception.class)
     @ResponseBody
 	public Result exception(Exception e) {

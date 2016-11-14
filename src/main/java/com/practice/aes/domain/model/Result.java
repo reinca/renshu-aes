@@ -1,5 +1,7 @@
 package com.practice.aes.domain.model;
 
+// Object for return to client
+
 public class Result {
 
 	private String id;

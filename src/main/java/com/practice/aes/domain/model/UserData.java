@@ -6,17 +6,22 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.practice.aes.Application;
 
 @Entity
+@Table(name="userauth")
 public class UserData {
 
-	@Id @GeneratedValue(strategy=GenerationType.AUTO) private long id;	// Unique id for database
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	@JsonIgnore
+	private long id;						// Unique id for database
 	private String uid;						// Unique id for server-client
 	private String encryptedKey;			// Encrypted Key based baseTime and loggedTime
 	private OffsetDateTime baseTime;		// Used as IV key, application start time (aes.Application)
-	private OffsetDateTime currentTime;		// Used as private key, time for requested
+	private OffsetDateTime requestedTime;		// Used as private key, time for requested
 
 	public UserData(){}
 	
@@ -24,7 +29,7 @@ public class UserData {
 		this.uid = uid;
 		this.encryptedKey = null;
 		this.baseTime = Application.UP_DATE;
-		this.currentTime = OffsetDateTime.now();
+		this.requestedTime = OffsetDateTime.now();
 	}
 
 	public long getId() {
@@ -60,22 +65,22 @@ public class UserData {
 		this.baseTime = baseTime;
 	}
 
-	public OffsetDateTime getCurrentTime() {
-		return currentTime;
+	public OffsetDateTime getRequestedTime() {
+		return requestedTime;
 	}
 
-	public void setCurrentTime() {
-		this.currentTime = OffsetDateTime.now();
+	public void setRequestedTime() {
+		this.requestedTime = OffsetDateTime.now();
 	}
 
-	public void setCurrentTime(OffsetDateTime currentTime) {
-		this.currentTime = currentTime;
+	public void setRequestedTime(OffsetDateTime RequestedTime) {
+		this.requestedTime = RequestedTime;
 	}
 
 	@Override
 	public String toString() {
-		return "UserData [id=" + id + ", uid=" + uid + ", encryptedKey=" + encryptedKey + ", baseTime=" + baseTime
-				+ ", loggedTime=" + currentTime + "]";
+		return "UserData [ID=" + id + ", Unique ID=" + uid + ", Encrypted Key=" + encryptedKey + ", Base Time=" + baseTime
+				+ ", Requested Time=" + requestedTime + "]";
 	}
 	
 }

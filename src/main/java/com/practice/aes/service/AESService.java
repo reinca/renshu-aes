@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.practice.aes.Application;
-import com.practice.aes.common.HexString;
+import com.practice.aes.common.StringUtil;
 import com.practice.aes.domain.model.Result;
 import com.practice.aes.domain.model.UserData;
 import com.practice.aes.domain.repository.UserDataRepository;
@@ -32,10 +32,11 @@ public class AESService {
 		return udr.findOneByUid(id);
 	}
 
+	// Compare both hex-encrypted key
 	@Transactional(readOnly = true)
 	public Result auth(String id, String key) {
 		UserData user = udr.findOneByUid(id);
-		String hexKey = HexString.toHexadecimal(user.getEncryptedKey());
+		String hexKey = StringUtil.toHexString(user.getEncryptedKey());
 		logger.info(user.getEncryptedKey());
 		String authResult = (key.equals(hexKey)) ? "success" : "failed";
 		return new Result(id, authResult);
@@ -52,10 +53,11 @@ public class AESService {
 	}
 
 	public Result addUser(String id) {
+		// If same ID exists, return failed
 		if(udr.findOneByUid(id) != null) return new Result(id, "failed");
 		UserData result = new UserData(id);
 		try {
-			String enc = cs.encode(result.getCurrentTime(), result.getBaseTime());
+			String enc = cs.encode(result.getRequestedTime(), result.getBaseTime());
 			result.setEncryptedKey(enc);
 			udr.save(result);
 			logger.debug(result.toString());
@@ -67,14 +69,15 @@ public class AESService {
 	}
 
 	public Result refreshPassword(String id) {
+		// If ID doesn't exists, return failed
 		if(udr.findOneByUid(id) == null) return new Result(id, "failed");
 		UserData result = udr.findOneByUid(id);
+		OffsetDateTime requestedTimeTmp = OffsetDateTime.now();
 		OffsetDateTime baseTimeTmp = Application.UP_DATE;
-		OffsetDateTime loggedTimeTmp = OffsetDateTime.now();
 		try {
-			String enc = cs.encode(loggedTimeTmp, baseTimeTmp);
+			String enc = cs.encode(requestedTimeTmp, baseTimeTmp);
+			result.setRequestedTime(requestedTimeTmp);
 			result.setBaseTime(baseTimeTmp);
-			result.setCurrentTime(loggedTimeTmp);
 			result.setEncryptedKey(enc);
 			udr.saveAndFlush(result);
 			logger.debug(result.toString());
@@ -85,16 +88,18 @@ public class AESService {
 		}
 	}
 
-	public Result decodePassword(String id) {
+	// Because of security problem, decode function unsupported
+/*	public Result decodePassword(String id) {
+		// If ID doesn't exists, return failed
 		if(udr.findOneByUid(id) != null) return new Result(id, "failed");
 		UserData result = new UserData(id);
 		try {
-			String enc = cs.decode(result.getEncryptedKey(), result.getCurrentTime(), result.getBaseTime());
+			String enc = cs.decode(result.getEncryptedKey(), result.getRequestedTime(), result.getBaseTime());
 			logger.debug(result.toString());
 			return new Result(id, enc);
 		} catch (Exception e) {
 			logger.error(e.toString());
 			return new Result(id, "failed");
 		}
-	}
+	}*/
 }
